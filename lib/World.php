@@ -23,7 +23,7 @@ class World{
 
     protected function seed(){
         for($y = 1; $y <= 100; $y++) {
-            print 'seeded<div class="row">';
+            print '<div class="row">';
                 foreach($this->rowGen($y) as $val){
                     echo $val;
                 }
@@ -52,10 +52,26 @@ class World{
         for ($y = 1; $y < 100; $y++) {
             print '<div class="row">';
             for ($x = 1; $x < 100; $x++) {
-                $currentState = $this->cells[$x][$y]->state;
-                $liveNeighbors = $this->cells[$x-1][$y-1]->state + $this->cells[$x][$y-1]->state + $this->cells[$x+1][$y-1]->state
-                    + $this->cells[$x-1][$y]->state + $this->cells[$x+1][$y]->state
-                    + $this->cells[$x-1][$y+1]->state + $this->cells[$x][$y+1]->state + $this->cells[$x+1][$y+1]->state;
+                $currentState = $this->cells[$x][$y]->getState();
+                if($x == 1 && $y == 1){
+	                $liveNeighbors = ($this->cells[$x + 1][$y]->getState()
+	                                 +  $this->cells[$x][$y + 1]->getState() + $this->cells[$x + 1][$y + 1]->getState())*2;
+                }elseif($x >1 && $y == 1){
+		            $liveNeighbors =  $this->cells[$x - 1][$y]->getState() + $this->cells[$x + 1][$y]->getState()
+		                             + $this->cells[$x - 1][$y + 1]->getState() + $this->cells[$x][$y + 1]->getState() + $this->cells[$x + 1][$y + 1]->getState();
+
+	            }elseif($x == 1 && $y > 1){
+	                $liveNeighbors =  $this->cells[$x][$y - 1]->getState() + $this->cells[$x + 1][$y - 1]->getState()
+	                              + $this->cells[$x + 1][$y]->getState()
+	                                 +  $this->cells[$x][$y + 1]->getState() + $this->cells[$x + 1][$y + 1]->getState();
+
+                }else{
+	                $liveNeighbors = $this->cells[$x - 1][$y - 1]->getState() + $this->cells[$x][$y - 1]->getState() + $this->cells[$x + 1][$y - 1]->getState()
+	                                 + $this->cells[$x - 1][$y]->getState() + $this->cells[$x + 1][$y]->getState()
+	                                 + $this->cells[$x - 1][$y + 1]->getState() + $this->cells[$x][$y + 1]->getState() + $this->cells[$x + 1][$y + 1]->getState();
+
+                }
+
                 if(isset($this->cells[$x][$y])) {
                     if ($liveNeighbors < 2) {
                         $this->cells[$x][$y]->setState(0);

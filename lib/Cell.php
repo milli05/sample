@@ -17,15 +17,15 @@ class Cell{
     public function __construct($x, $y, $state){
         $this->x = $x;
         $this->y = $y;
-        $this->state =$state;
+        $this->setState($state);
     }
 
     public function setState($state){
         $this->state = $state;
     }
 
-    public function __get($variable){
-        return $this->variable;
+    public function getState(){
+        return $this->state;
     }
 
     public function setColor($color)
@@ -39,7 +39,7 @@ class Cell{
     }
 
     public function __toString(){
-        if($this->state){
+        if($this->getState()){
             return '<div class="cell alive"></div>';
         }else{
             return '  <div class="cell"></div>';
